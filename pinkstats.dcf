@@ -1,0 +1,12 @@
+name: pinkstats
+title:
+username: pinkstats
+account: pinkstats
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 16188310
+bundleId: 11244525
+url: https://pinkstats.shinyapps.io/pinkstats/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
