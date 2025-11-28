@@ -1,0 +1,38 @@
+name: Deploy Shiny app to shinyapps.io
+on:
+  push:
+    branches: [ main ]   # change branch if you use 'master' or another
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
+
+    - name: Set up R
+      uses: r-lib/actions/setup-r@v2
+      with:
+        r-version: '4.3'   # optional: choose a supported R version
+
+    - name: Install system dependencies (optional)
+      run: |
+        # only if you need system libs; otherwise remove this step
+        sudo apt-get update -y
+        # sudo apt-get install -y libxml2-dev libssl-dev libcurl4-openssl-dev
+
+    - name: Install R package dependencies
+      run: |
+        Rscript -e 'install.packages(c("remotes"), repos="https://cloud.r-project.org")'
+        Rscript -e 'remotes::install_cran(c("rsconnect","shiny","shinyWidgets","shinyjqui","ggplot2"))'
+      shell: bash
+
+    - name: Deploy to shinyapps.io
+      env:
+        RSCONNECT_NAME: ${{ secrets.RSCONNECT_NAME }}
+        RSCONNECT_TOKEN: ${{ secrets.RSCONNECT_TOKEN }}
+        RSCONNECT_SECRET: ${{ secrets.RSCONNECT_SECRET }}
+      run: |
+        Rscript -e "rsconnect::setAccountInfo(name = Sys.getenv('RSCONNECT_NAME'), token = Sys.getenv('RSCONNECT_TOKEN'), secret = Sys.getenv('RSCONNECT_SECRET'))"
+        Rscript -e "rsconnect::deployApp(appDir = '.', account = Sys.getenv('RSCONNECT_NAME'), forceUpdate = TRUE)"
+      shell: bash
