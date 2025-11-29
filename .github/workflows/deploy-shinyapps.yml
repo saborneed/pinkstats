@@ -16,11 +16,19 @@ jobs:
       with:
         r-version: '4.3'   # or '4.4' if you prefer; match your app needs
 
-    - name: Install R package dependencies
+    - name: Install R package dependencies (with system libs)
       run: |
-        Rscript -e 'options(repos = c(CRAN = "https://cloud.r-project.org")); install.packages(c("rsconnect","shiny","shinyWidgets","shinyjqui","ggplot2"))'
+        sudo apt-get update -y
+        sudo apt-get install -y \
+          libssl-dev \
+          libcurl4-openssl-dev \
+          libxml2-dev \
+          libgit2-dev \
+          libssh-dev \
+          libsodium-dev
+        Rscript -e 'options(repos = c(CRAN = "https://cloud.r-project.org")); install.packages(c("rsconnect","shiny","shinyWidgets","shinyjqui","ggplot2"), dependencies = TRUE)'
       shell: bash
-
+      
     - name: Deploy to shinyapps.io
       env:
         RSCONNECT_NAME: ${{ secrets.RSCONNECT_NAME }}
