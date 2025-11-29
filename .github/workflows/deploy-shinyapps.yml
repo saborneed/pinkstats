@@ -1,30 +1,24 @@
 name: Deploy Shiny app to shinyapps.io
 on:
   push:
-    branches: [ main ]   # change branch if you use 'master' or another
+    branches: [ main ]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Check out repository
+    - name: Checkout repo
       uses: actions/checkout@v4
 
     - name: Set up R
       uses: r-lib/actions/setup-r@v2
       with:
-        r-version: '4.3'   # optional: choose a supported R version
-
-    - name: Install system dependencies (optional)
-      run: |
-        # only if you need system libs; otherwise remove this step
-        sudo apt-get update -y
-        # sudo apt-get install -y libxml2-dev libssl-dev libcurl4-openssl-dev
+        r-version: '4.3'   # or '4.4' if you prefer; match your app needs
 
     - name: Install R package dependencies
       run: |
-        Rscript -e 'install.packages(c("remotes"), repos="https://cloud.r-project.org")'
-        Rscript -e 'remotes::install_cran(c("rsconnect","shiny","shinyWidgets","shinyjqui","ggplot2"))'
+        Rscript -e 'options(repos = c(CRAN = "https://cloud.r-project.org")); install.packages(c("rsconnect","shiny","shinyWidgets","shinyjqui","ggplot2"))'
       shell: bash
 
     - name: Deploy to shinyapps.io
