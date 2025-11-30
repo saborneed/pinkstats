@@ -1,0 +1,19 @@
+{"version": 1,
+ "locale": "en_US.UTF-8",
+ "metadata": {
+  "appmode": "shiny",
+  "entrypoint": "app.R"
+ },
+ "packages": {
+  "R": [
+   { "package": "shiny", "version": "1.7.4", "source": "CRAN" },
+   { "package": "shinyWidgets", "version": "0.8.0", "source": "CRAN" },
+   { "package": "shinyjqui", "version": "0.4.8", "source": "CRAN" },
+   { "package": "ggplot2", "version": "3.4.2", "source": "CRAN" }
+  ]
+ },
+ "files": {
+  "app.R": { "checksum": "e164a640f21b2af4785773914496fa0d8fcc4a5e" }
+ },
+ "users": null
+}
